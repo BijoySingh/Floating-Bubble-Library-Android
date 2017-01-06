@@ -6,12 +6,10 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "com.bsk.floatingbubblelib"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -23,27 +21,22 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    testCompile 'junit:junit:4.12'
 }
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'floating_bubble'
+    bintrayName = 'floating-bubble'
 
     publishedGroupId = 'com.github.bijoysingh'
-    libraryName = 'floating_bubble'
-    artifact = 'floating_bubble'
+    libraryName = 'floating-bubble'
+    artifact = 'floating-bubble'
 
     libraryDescription = 'Simple library to add Floating Bubble into your app!'
 
     siteUrl = 'https://github.com/BijoySingh/FloatingBubbleLib'
     gitUrl = 'https://github.com/BijoySingh/FloatingBubbleLib.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.3'
 
     developerId = 'bijoysingh693'
     developerName = 'Bijoy Singh Kochar'
