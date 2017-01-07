@@ -1,1 +1,1 @@
-include ':floating-bubble'
+include ':floating-bubble', ':sampleapp'
