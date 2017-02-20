@@ -2,16 +2,12 @@
 Simple library for adding a floating bubble in your application!
 
 ## Installation
-```java
-
-```
-
-## Usage
-### Dependency
 **NOTE: This will not work for some time, I am resolving this**
 ```java
 compile 'com.github.bijoysingh.floating-bubble:1.0.0'
 ```
+
+## Usage
 
 ### Setup
 Let's start with a simple setup for the Service
