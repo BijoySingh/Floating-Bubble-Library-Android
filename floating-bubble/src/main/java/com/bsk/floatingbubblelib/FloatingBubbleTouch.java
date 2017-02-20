@@ -33,6 +33,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
   private WindowManager.LayoutParams expandableParams;
   private int removeBubbleStartSize;
   private int removeBubbleExpandedSize;
+  private FloatingBubbleAnimator animator;
 
   private long touchStartTime = 0;
   private long lastTouchTime = 0;
@@ -56,6 +57,13 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     expandableParams = (WindowManager.LayoutParams) expandableView.getLayoutParams();
     removeBubbleStartSize = removeBubbleSize;
     removeBubbleExpandedSize = (int) (EXPANSION_FACTOR * removeBubbleSize);
+    animator = new FloatingBubbleAnimator.Builder()
+        .sizeX(sizeX)
+        .sizeY(sizeY)
+        .windowManager(windowManager)
+        .bubbleView(bubbleView)
+        .bubbleParams(bubbleParams)
+        .build();
   }
 
   @Override
@@ -63,6 +71,12 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     switch (motionEvent.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         touchStartTime = System.currentTimeMillis();
+        if (listener != null) {
+          listener.onDown(motionEvent.getRawX(), motionEvent.getRawY());
+        }
+        if (sendEventToPhysics()) {
+          physics.onDown(motionEvent.getRawX(), motionEvent.getRawY());
+        }
         break;
 
       case MotionEvent.ACTION_MOVE:
@@ -96,10 +110,10 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
         } else {
           checkRemoveBubble();
           if (listener != null) {
-            listener.onRelease(motionEvent.getRawX(), motionEvent.getRawY());
+            listener.onUp(motionEvent.getRawX(), motionEvent.getRawY());
           }
           if (sendEventToPhysics()) {
-            physics.onRelease(motionEvent.getRawX(), motionEvent.getRawY());
+            physics.onUp(motionEvent.getRawX(), motionEvent.getRawY());
           }
         }
     }
@@ -207,7 +221,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
         break;
     }
 
-    FloatingBubbleAnimator.animate(bubbleView, windowManager, x, y);
+    animator.animate(x, y);
     if (!expanded) {
       expanded = true;
       expandableView.setVisibility(View.VISIBLE);

@@ -6,6 +6,11 @@ package com.bsk.floatingbubblelib;
 
 public class DefaultFloatingBubbleTouchListener implements FloatingBubbleTouchListener {
   @Override
+  public void onDown(float x, float y) {
+
+  }
+
+  @Override
   public void onTap(boolean expanded) {
 
   }
@@ -21,7 +26,7 @@ public class DefaultFloatingBubbleTouchListener implements FloatingBubbleTouchLi
   }
 
   @Override
-  public void onRelease(float x, float y) {
+  public void onUp(float x, float y) {
 
   }
 }
