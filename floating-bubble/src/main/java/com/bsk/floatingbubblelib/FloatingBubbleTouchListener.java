@@ -1,4 +1,4 @@
-package com.bsk.floatingbubblelib.listeners;
+package com.bsk.floatingbubblelib;
 
 /**
  * Floating bubble remove listener
@@ -11,6 +11,8 @@ public interface FloatingBubbleTouchListener {
 
   void onRemove();
 
-  void onRelease();
+  void onMove(float x, float y);
+
+  void onRelease(float x, float y);
 
 }

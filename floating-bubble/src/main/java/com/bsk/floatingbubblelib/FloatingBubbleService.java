@@ -1,7 +1,6 @@
 package com.bsk.floatingbubblelib;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
@@ -13,11 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.bsk.floatingbubblelib.listeners.FloatingBubbleTouchListener;
 
 /**
  * Floating Bubble Service. This file is the actual bubble view.
@@ -50,6 +46,7 @@ public class FloatingBubbleService extends Service {
   protected WindowManager.LayoutParams expandableParams;
 
   private FloatingBubbleConfig config;
+  private FloatingBubblePhysics physics;
 
   @Override
   public void onCreate() {
@@ -84,16 +81,27 @@ public class FloatingBubbleService extends Service {
   public void onDestroy() {
     super.onDestroy();
     logger.log("onDestroy");
+    removeAllViews();
+  }
+
+  private void removeAllViews() {
     if (windowManager == null) {
       return;
     }
 
     if (bubbleView != null) {
       windowManager.removeView(bubbleView);
+      bubbleView = null;
     }
 
     if (removeBubbleView != null) {
       windowManager.removeView(removeBubbleView);
+      removeBubbleView = null;
+    }
+
+    if (expandableView != null) {
+      windowManager.removeView(expandableView);
+      expandableView = null;
     }
   }
 
@@ -173,26 +181,24 @@ public class FloatingBubbleService extends Service {
   }
 
   protected void setTouchListener() {
+    physics = new FloatingBubblePhysics.Builder()
+        .sizeX(windowSize.x)
+        .sizeY(windowSize.y)
+        .bubbleView(bubbleView)
+        .config(config)
+        .windowManager(windowManager)
+        .build();
+
     bubbleView.setOnTouchListener(new FloatingBubbleTouch.Builder()
         .sizeX(windowSize.x)
         .sizeY(windowSize.y)
-        .logger(logger)
-        .listener(new FloatingBubbleTouchListener() {
-          @Override
-          public void onTap(boolean expanded) {
-
-          }
-
+        .listener(new DefaultFloatingBubbleTouchListener() {
           @Override
           public void onRemove() {
             stopSelf();
           }
-
-          @Override
-          public void onRelease() {
-
-          }
         })
+        .physics(physics)
         .bubbleView(bubbleView)
         .removeBubbleSize(dpToPixels(config.getRemoveBubbleIconDp()))
         .windowManager(windowManager)

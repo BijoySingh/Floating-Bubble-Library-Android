@@ -5,8 +5,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.bsk.floatingbubblelib.listeners.FloatingBubbleTouchListener;
-
 /**
  * Touch event for the Floating Bubble Service
  * Created by bijoysingh on 2/19/17.
@@ -23,9 +21,9 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
   private View bubbleView;
   private View removeBubbleView;
   private View expandableView;
-  private FloatingBubbleLogger logger;
   private WindowManager windowManager;
   private FloatingBubbleTouchListener listener;
+  private FloatingBubbleTouchListener physics;
   private int removeBubbleSize;
   private FloatingBubbleConfig config;
   private int padding;
@@ -44,9 +42,9 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     padding = builder.padding;
     config = builder.config;
     removeBubbleSize = builder.removeBubbleSize;
+    physics = builder.physics;
     listener = builder.listener;
     windowManager = builder.windowManager;
-    logger = builder.logger;
     expandableView = builder.expandableView;
     removeBubbleView = builder.removeBubbleView;
     bubbleView = builder.bubbleView;
@@ -74,6 +72,13 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
           compressView();
           showRemoveBubble(View.VISIBLE);
         }
+
+        if (listener != null) {
+          listener.onMove(motionEvent.getRawX(), motionEvent.getRawY());
+        }
+        if (sendEventToPhysics()) {
+          physics.onMove(motionEvent.getRawX(), motionEvent.getRawY());
+        }
         break;
 
       case MotionEvent.ACTION_UP:
@@ -82,10 +87,20 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
         lastTouchTime = System.currentTimeMillis();
         if (lastTouchTime - touchStartTime < TOUCH_CLICK_TIME) {
           toggleView();
-          listener.onTap(expanded);
+          if (listener != null) {
+            listener.onTap(expanded);
+          }
+          if (sendEventToPhysics()) {
+            physics.onTap(expanded);
+          }
         } else {
           checkRemoveBubble();
-          listener.onRelease();
+          if (listener != null) {
+            listener.onRelease(motionEvent.getRawX(), motionEvent.getRawY());
+          }
+          if (sendEventToPhysics()) {
+            physics.onRelease(motionEvent.getRawX(), motionEvent.getRawY());
+          }
         }
     }
     return true;
@@ -141,8 +156,17 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
 
   private void checkRemoveBubble() {
     if (isInsideRemoveBubble()) {
-      listener.onRemove();
+      if (listener != null) {
+        listener.onRemove();
+      }
+      if (sendEventToPhysics()) {
+        physics.onRemove();
+      }
     }
+  }
+
+  private boolean sendEventToPhysics() {
+    return config.isPhysicsEnabled() && physics != null;
   }
 
   private void showRemoveBubble(int visibility) {
@@ -182,16 +206,14 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
         x = sizeX - bubbleView.getWidth() - padding;
         break;
     }
-    bubbleParams.x = x;
-    bubbleParams.y = y;
-    windowManager.updateViewLayout(bubbleView, bubbleParams);
 
+    FloatingBubbleAnimator.animate(bubbleView, windowManager, x, y);
     if (!expanded) {
       expanded = true;
       expandableView.setVisibility(View.VISIBLE);
     }
 
-    expandableParams.y = bubbleParams.y + bubbleView.getWidth();
+    expandableParams.y = y + bubbleView.getWidth();
     windowManager.updateViewLayout(expandableView, expandableParams);
   }
 
@@ -205,6 +227,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     private WindowManager windowManager;
     private FloatingBubbleTouchListener listener;
     private int removeBubbleSize;
+    private FloatingBubbleTouchListener physics;
     private FloatingBubbleConfig config;
     private int padding;
 
@@ -252,6 +275,11 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
 
     public Builder removeBubbleSize(int val) {
       removeBubbleSize = val;
+      return this;
+    }
+
+    public Builder physics(FloatingBubbleTouchListener val) {
+      physics = val;
       return this;
     }
 

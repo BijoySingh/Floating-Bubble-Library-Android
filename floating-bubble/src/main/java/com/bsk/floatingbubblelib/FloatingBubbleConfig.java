@@ -22,6 +22,7 @@ public class FloatingBubbleConfig {
   private int expandableColor;
   private int gravity;
   private int paddingDp;
+  private boolean physicsEnabled;
 
   private FloatingBubbleConfig(Builder builder) {
     bubbleIcon = builder.bubbleIcon;
@@ -32,15 +33,17 @@ public class FloatingBubbleConfig {
     expandableColor = builder.expandableColor;
     gravity = builder.gravity;
     paddingDp = builder.paddingDp;
+    physicsEnabled = builder.physicsEnabled;
   }
 
-  public static FloatingBubbleConfig.Builder getDefaultBuilder(Context context) {
+  public static Builder getDefaultBuilder(Context context) {
     return new Builder()
         .bubbleIcon(ContextCompat.getDrawable(context, R.drawable.bubble_default_icon))
         .removeBubbleIcon(ContextCompat.getDrawable(context, R.drawable.close_default_icon))
         .bubbleIconDp(64)
         .removeBubbleIconDp(64)
         .paddingDp(4)
+        .physicsEnabled(true)
         .expandableColor(Color.WHITE)
         .gravity(Gravity.END);
   }
@@ -81,6 +84,10 @@ public class FloatingBubbleConfig {
     return paddingDp;
   }
 
+  public boolean isPhysicsEnabled() {
+    return physicsEnabled;
+  }
+
   public static final class Builder {
     private Drawable bubbleIcon;
     private Drawable removeBubbleIcon;
@@ -90,6 +97,7 @@ public class FloatingBubbleConfig {
     private int expandableColor;
     private int gravity;
     private int paddingDp;
+    private boolean physicsEnabled;
 
     public Builder() {
     }
@@ -135,6 +143,11 @@ public class FloatingBubbleConfig {
 
     public Builder paddingDp(int val) {
       paddingDp = val;
+      return this;
+    }
+
+    public Builder physicsEnabled(boolean val) {
+      physicsEnabled = val;
       return this;
     }
   }
