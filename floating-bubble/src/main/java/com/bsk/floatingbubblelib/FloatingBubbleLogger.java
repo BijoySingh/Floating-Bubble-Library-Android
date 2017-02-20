@@ -1,4 +1,4 @@
-package com.bsk.floatingbubblelib.log;
+package com.bsk.floatingbubblelib;
 
 import android.util.Log;
 

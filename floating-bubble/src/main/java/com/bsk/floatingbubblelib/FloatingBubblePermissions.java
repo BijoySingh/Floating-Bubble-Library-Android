@@ -1,4 +1,4 @@
-package com.bsk.floatingbubblelib.permission;
+package com.bsk.floatingbubblelib;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -12,7 +12,8 @@ import android.provider.Settings;
  * Created by bijoy on 1/6/17.
  */
 
-public class PermissionUtils {
+public class FloatingBubblePermissions {
+
   public static final Integer REQUEST_CODE_ASK_PERMISSIONS = 1201;
 
   public static boolean requiresPermission(Activity activity) {

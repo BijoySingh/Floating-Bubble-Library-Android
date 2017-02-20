@@ -14,7 +14,7 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <service android:name="com.bsk.floatingbubblelib.service.FloatingBubbleService" />
+    <service android:name="com.bsk.floatingbubblelib.FloatingBubbleService" />
   </application>
 
 </manifest>

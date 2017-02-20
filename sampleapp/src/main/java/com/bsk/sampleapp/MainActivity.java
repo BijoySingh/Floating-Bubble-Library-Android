@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.bsk.floatingbubblelib.permission.PermissionUtils;
-import com.bsk.floatingbubblelib.service.FloatingBubbleServiceBuilder;
+import com.bsk.floatingbubblelib.FloatingBubblePermissions;
+import com.bsk.floatingbubblelib.FloatingBubbleService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,16 +15,12 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    PermissionUtils.startPermissionRequest(this);
+    FloatingBubblePermissions.startPermissionRequest(this);
     View startBubble = findViewById(R.id.start_bubble);
     startBubble.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent serviceIntent =
-            new FloatingBubbleServiceBuilder(view.getContext())
-                .setDebugMode(true)
-                .build();
-        startService(serviceIntent);
+        startService(new Intent(view.getContext(), FloatingBubbleService.class));
       }
     });
   }
