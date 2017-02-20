@@ -11,4 +11,6 @@ public interface FloatingBubbleTouchListener {
 
   void onRemove();
 
+  void onRelease();
+
 }

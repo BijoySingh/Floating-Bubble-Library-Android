@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -112,6 +113,8 @@ public class FloatingBubbleService extends Service {
    * Creates the views
    */
   protected void setupViews() {
+    int padding = dpToPixels(config.getPaddingDp());
+
     // Setting up view
     bubbleView = inflater.inflate(R.layout.floating_bubble_view, null);
     removeBubbleView = inflater.inflate(R.layout.floating_remove_bubble_view, null);
@@ -123,7 +126,7 @@ public class FloatingBubbleService extends Service {
     removeBubbleParams.width = dpToPixels(config.getRemoveBubbleIconDp());
     removeBubbleParams.height = dpToPixels(config.getRemoveBubbleIconDp());
     removeBubbleParams.x = (windowSize.x - removeBubbleParams.width) / 2;
-    removeBubbleParams.y = windowSize.y - removeBubbleParams.height;
+    removeBubbleParams.y = windowSize.y - removeBubbleParams.height - padding;
     removeBubbleView.setVisibility(View.GONE);
     windowManager.addView(removeBubbleView, removeBubbleParams);
 
@@ -133,10 +136,12 @@ public class FloatingBubbleService extends Service {
         WindowManager.LayoutParams.WRAP_CONTENT);
     expandableParams.gravity = Gravity.TOP | Gravity.START;
     expandableView.setVisibility(View.GONE);
+    ((LinearLayout) expandableView).setGravity(config.getGravity());
+    expandableView.setPadding(padding, padding, padding, padding);
     windowManager.addView(expandableView, expandableParams);
 
     // Setting up the Floating Bubble View
-    bubbleParams= getDefaultWindowParams();
+    bubbleParams = getDefaultWindowParams();
     bubbleParams.gravity = Gravity.TOP | Gravity.START;
     bubbleParams.width = dpToPixels(config.getBubbleIconDp());
     bubbleParams.height = dpToPixels(config.getBubbleIconDp());
@@ -150,10 +155,11 @@ public class FloatingBubbleService extends Service {
       ((ImageView) bubbleView).setImageDrawable(config.getBubbleIcon());
     }
     if (config.getExpandableView() != null) {
-      ((LinearLayout) expandableView).setGravity(config.getGravity());
-
       ImageView triangle = (ImageView) expandableView.findViewById(R.id.expandableViewTriangle);
       triangle.setColorFilter(config.getExpandableColor());
+      ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) triangle.getLayoutParams();
+      params.leftMargin = dpToPixels((config.getBubbleIconDp() - 16) / 2);
+      params.rightMargin = dpToPixels((config.getBubbleIconDp() - 16) / 2);
 
       LinearLayout container = (LinearLayout) expandableView.findViewById(R.id.expandableViewContainer);
       container.setBackgroundColor(config.getExpandableColor());
@@ -181,6 +187,11 @@ public class FloatingBubbleService extends Service {
           public void onRemove() {
             stopSelf();
           }
+
+          @Override
+          public void onRelease() {
+
+          }
         })
         .bubbleView(bubbleView)
         .removeBubbleSize(dpToPixels(config.getRemoveBubbleIconDp()))
@@ -188,6 +199,7 @@ public class FloatingBubbleService extends Service {
         .expandableView(expandableView)
         .removeBubbleView(removeBubbleView)
         .config(config)
+        .padding(dpToPixels(config.getPaddingDp()))
         .build());
   }
 

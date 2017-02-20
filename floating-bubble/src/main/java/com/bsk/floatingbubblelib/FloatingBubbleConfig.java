@@ -21,30 +21,32 @@ public class FloatingBubbleConfig {
   private int removeBubbleIconDp;
   private int expandableColor;
   private int gravity;
+  private int paddingDp;
 
   private FloatingBubbleConfig(Builder builder) {
-    gravity = builder.gravity;
-    expandableColor = builder.expandableColor;
-    removeBubbleIconDp = builder.removeBubbleIconDp;
-    bubbleIconDp = builder.bubbleIconDp;
-    expandableView = builder.expandableView;
-    removeBubbleIcon = builder.removeBubbleIcon;
     bubbleIcon = builder.bubbleIcon;
+    removeBubbleIcon = builder.removeBubbleIcon;
+    expandableView = builder.expandableView;
+    bubbleIconDp = builder.bubbleIconDp;
+    removeBubbleIconDp = builder.removeBubbleIconDp;
+    expandableColor = builder.expandableColor;
+    gravity = builder.gravity;
+    paddingDp = builder.paddingDp;
   }
 
-  public static FloatingBubbleConfig getDefault(Context context) {
-    TextView text = new TextView(context);
-    text.setText("HELLO!!!");
-
+  public static FloatingBubbleConfig.Builder getDefaultBuilder(Context context) {
     return new Builder()
         .bubbleIcon(ContextCompat.getDrawable(context, R.drawable.bubble_default_icon))
         .removeBubbleIcon(ContextCompat.getDrawable(context, R.drawable.close_default_icon))
         .bubbleIconDp(64)
         .removeBubbleIconDp(64)
-        .expandableView(text)
+        .paddingDp(4)
         .expandableColor(Color.WHITE)
-        .gravity(Gravity.START)
-        .build();
+        .gravity(Gravity.END);
+  }
+
+  public static FloatingBubbleConfig getDefault(Context context) {
+    return getDefaultBuilder(context).build();
   }
 
   public Drawable getBubbleIcon() {
@@ -75,6 +77,10 @@ public class FloatingBubbleConfig {
     return gravity;
   }
 
+  public int getPaddingDp() {
+    return paddingDp;
+  }
+
   public static final class Builder {
     private Drawable bubbleIcon;
     private Drawable removeBubbleIcon;
@@ -83,6 +89,7 @@ public class FloatingBubbleConfig {
     private int removeBubbleIconDp;
     private int expandableColor;
     private int gravity;
+    private int paddingDp;
 
     public Builder() {
     }
@@ -123,6 +130,11 @@ public class FloatingBubbleConfig {
 
     public Builder gravity(int val) {
       gravity = val;
+      return this;
+    }
+
+    public Builder paddingDp(int val) {
+      paddingDp = val;
       return this;
     }
   }

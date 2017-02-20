@@ -28,6 +28,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
   private FloatingBubbleTouchListener listener;
   private int removeBubbleSize;
   private FloatingBubbleConfig config;
+  private int padding;
 
   private WindowManager.LayoutParams bubbleParams;
   private WindowManager.LayoutParams removeBubbleParams;
@@ -40,6 +41,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
   private boolean expanded = false;
 
   private FloatingBubbleTouch(Builder builder) {
+    padding = builder.padding;
     config = builder.config;
     removeBubbleSize = builder.removeBubbleSize;
     listener = builder.listener;
@@ -83,6 +85,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
           listener.onTap(expanded);
         } else {
           checkRemoveBubble();
+          listener.onRelease();
         }
     }
     return true;
@@ -163,7 +166,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
 
   private void expandView() {
     int x = 0;
-    int y = 0;
+    int y = padding;
     switch (config.getGravity()) {
       case Gravity.CENTER:
       case Gravity.CENTER_HORIZONTAL:
@@ -172,11 +175,11 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
         break;
       case Gravity.LEFT:
       case Gravity.START:
-        x = 0;
+        x = padding;
         break;
       case Gravity.RIGHT:
       case Gravity.END:
-        x = sizeX - bubbleView.getWidth();
+        x = sizeX - bubbleView.getWidth() - padding;
         break;
     }
     bubbleParams.x = x;
@@ -203,6 +206,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     private FloatingBubbleTouchListener listener;
     private int removeBubbleSize;
     private FloatingBubbleConfig config;
+    private int padding;
 
     public Builder() {
     }
@@ -258,6 +262,11 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
 
     public Builder config(FloatingBubbleConfig val) {
       config = val;
+      return this;
+    }
+
+    public Builder padding(int val) {
+      padding = val;
       return this;
     }
   }
