@@ -192,12 +192,7 @@ public class FloatingBubbleService extends Service {
     bubbleView.setOnTouchListener(new FloatingBubbleTouch.Builder()
         .sizeX(windowSize.x)
         .sizeY(windowSize.y)
-        .listener(new DefaultFloatingBubbleTouchListener() {
-          @Override
-          public void onRemove() {
-            stopSelf();
-          }
-        })
+        .listener(getTouchListener())
         .physics(physics)
         .bubbleView(bubbleView)
         .removeBubbleSize(dpToPixels(config.getRemoveBubbleIconDp()))
@@ -207,6 +202,15 @@ public class FloatingBubbleService extends Service {
         .config(config)
         .padding(dpToPixels(config.getPaddingDp()))
         .build());
+  }
+
+  public FloatingBubbleTouchListener getTouchListener() {
+    return new DefaultFloatingBubbleTouchListener() {
+      @Override
+      public void onRemove() {
+        stopSelf();
+      }
+    };
   }
 
   /**
