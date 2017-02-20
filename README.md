@@ -34,15 +34,34 @@ public class FloatingService extends FloatingBubbleService {
   @Override
   protected FloatingBubbleConfig getConfig() {
     return new FloatingBubbleConfig.Builder()
-        .bubbleIcon(bubbleDrawable) // Set the drawable for the bubble
-        .removeBubbleIcon(removeIconDrawable) // Set the drawable for the remove bubble
-        .bubbleIconDp(64) // Set the size of the bubble in dp
-        .removeBubbleIconDp(64) // Set the size of the remove bubble in dp
-        .paddingDp(4) // Set the padding of the view from the boundary
-        .physicsEnabled(true) // Does the bubble attract towards the walls
-        .expandableColor(Color.WHITE) // The color of the triangable and background of the layout
-        .gravity(Gravity.END) // Horizontal gravity of the bubble when expanded
-        .expandableView(bubbleView) // The view which is visible in the expanded view
+        // Set the drawable for the bubble
+        .bubbleIcon(bubbleDrawable)
+
+        // Set the drawable for the remove bubble
+        .removeBubbleIcon(removeIconDrawable)
+
+        // Set the size of the bubble in dp
+        .bubbleIconDp(64)
+
+        // Set the size of the remove bubble in dp
+        .removeBubbleIconDp(64)
+
+        // Set the padding of the view from the boundary
+        .paddingDp(4)
+
+        // Does the bubble attract towards the walls
+        .physicsEnabled(true)
+
+        // The color of the triangable and background of the layout
+        .expandableColor(Color.WHITE)
+
+        // Horizontal gravity of the bubble when expanded
+        .gravity(Gravity.END)
+
+        // The view which is visible in the expanded view
+        .expandableView(bubbleView)
+
+        // Building
         .build();
   }
 }
