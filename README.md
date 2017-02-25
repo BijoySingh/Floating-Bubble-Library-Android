@@ -7,6 +7,10 @@ Simple library for adding a floating bubble in your application!
 compile 'com.github.bijoysingh.floating-bubble:1.0.0'
 ```
 
+## Demos
+![Compressed](screenshots/screenshot_1.png)
+![Expanded](screenshots/screenshot_2.png)
+
 ## Usage
 
 ### Setup
@@ -24,7 +28,7 @@ Adding your library in the manifest
 
 Start the service
 ```java
-startService(new Intent(view.getContext(), FloatingService.class));
+startService(new Intent(context, FloatingService.class));
 ```
 
 ### Customising the Service
@@ -59,7 +63,7 @@ public class FloatingService extends FloatingBubbleService {
         .gravity(Gravity.END)
 
         // The view which is visible in the expanded view
-        .expandableView(bubbleView)
+        .expandableView(yourViewAfterClick)
 
         // Building
         .build();

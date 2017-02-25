@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     startBubble.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        startService(new Intent(view.getContext(), SimpleService.class));
+        startService(new Intent(getApplicationContext(), SimpleService.class));
       }
     });
   }
