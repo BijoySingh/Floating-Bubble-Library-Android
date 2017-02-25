@@ -230,6 +230,7 @@ public class FloatingBubbleService extends Service {
         .expandableView(expandableView)
         .removeBubbleView(removeBubbleView)
         .config(config)
+        .marginBottom(getExpandableViewBottomMargin())
         .padding(dpToPixels(config.getPaddingDp()))
         .build());
   }

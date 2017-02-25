@@ -159,9 +159,12 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
   }
 
   private boolean isInsideRemoveBubble() {
+    int bubbleSize = removeBubbleView.getWidth() == 0
+        ? removeBubbleStartSize
+        : removeBubbleView.getWidth();
     int top = removeBubbleParams.y;
-    int right = removeBubbleParams.x + removeBubbleStartSize;
-    int bottom = removeBubbleParams.y + removeBubbleStartSize;
+    int right = removeBubbleParams.x + bubbleSize;
+    int bottom = removeBubbleParams.y + bubbleSize;
     int left = removeBubbleParams.x;
 
     int centerX = bubbleParams.x + bubbleView.getWidth() / 2;
