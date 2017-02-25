@@ -8,8 +8,7 @@ compile 'com.github.bijoysingh.floating-bubble:1.0.0'
 ```
 
 ## Demos
-![Compressed](screenshots/screenshot_1.png)
-![Expanded](screenshots/screenshot_2.png)
+![Demo](screenshots/demo.gif)
 
 ## Usage
 
