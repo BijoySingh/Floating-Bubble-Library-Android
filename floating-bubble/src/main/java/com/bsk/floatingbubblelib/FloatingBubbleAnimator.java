@@ -1,6 +1,7 @@
 package com.bsk.floatingbubblelib;
 
 import android.animation.ValueAnimator;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -38,19 +39,23 @@ public class FloatingBubbleAnimator {
     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override
       public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        float currentX = startX + ((x - startX) *
-            (Integer) valueAnimator.getAnimatedValue() / ANIMATION_STEPS);
-        float currentY = startY + ((y - startY) *
-            (Integer) valueAnimator.getAnimatedValue() / ANIMATION_STEPS);
-        bubbleParams.x = (int) currentX;
-        bubbleParams.x = bubbleParams.x < 0 ? 0 : bubbleParams.x;
-        bubbleParams.x = bubbleParams.x > sizeX - bubbleView.getWidth() ? sizeX - bubbleView.getWidth() : bubbleParams.x;
+        try {
+          float currentX = startX + ((x - startX) *
+              (Integer) valueAnimator.getAnimatedValue() / ANIMATION_STEPS);
+          float currentY = startY + ((y - startY) *
+              (Integer) valueAnimator.getAnimatedValue() / ANIMATION_STEPS);
+          bubbleParams.x = (int) currentX;
+          bubbleParams.x = bubbleParams.x < 0 ? 0 : bubbleParams.x;
+          bubbleParams.x = bubbleParams.x > sizeX - bubbleView.getWidth() ? sizeX - bubbleView.getWidth() : bubbleParams.x;
 
-        bubbleParams.y = (int) currentY;
-        bubbleParams.y = bubbleParams.y < 0 ? 0 : bubbleParams.y;
-        bubbleParams.y = bubbleParams.y > sizeY - bubbleView.getWidth() ? sizeY - bubbleView.getWidth() : bubbleParams.y;
+          bubbleParams.y = (int) currentY;
+          bubbleParams.y = bubbleParams.y < 0 ? 0 : bubbleParams.y;
+          bubbleParams.y = bubbleParams.y > sizeY - bubbleView.getWidth() ? sizeY - bubbleView.getWidth() : bubbleParams.y;
 
-        windowManager.updateViewLayout(bubbleView, bubbleParams);
+          windowManager.updateViewLayout(bubbleView, bubbleParams);
+        } catch (Exception exception) {
+          Log.e(FloatingBubbleAnimator.class.getSimpleName(), exception.getMessage());
+        }
       }
     });
     animator.start();

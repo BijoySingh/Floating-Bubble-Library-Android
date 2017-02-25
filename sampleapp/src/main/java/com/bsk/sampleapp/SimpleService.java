@@ -1,5 +1,6 @@
 package com.bsk.sampleapp;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
@@ -16,15 +17,17 @@ import com.bsk.floatingbubblelib.FloatingBubbleTouchListener;
 public class SimpleService extends FloatingBubbleService {
   @Override
   protected FloatingBubbleConfig getConfig() {
+    Context context = getApplicationContext();
     return new FloatingBubbleConfig.Builder()
-        .bubbleIcon(ContextCompat.getDrawable(getApplicationContext(), com.bsk.floatingbubblelib.R.drawable.bubble_default_icon))
-        .removeBubbleIcon(ContextCompat.getDrawable(getApplicationContext(), com.bsk.floatingbubblelib.R.drawable.close_default_icon))
+        .bubbleIcon(ContextCompat.getDrawable(context, R.drawable.web_icon))
+        .removeBubbleIcon(ContextCompat.getDrawable(context, com.bsk.floatingbubblelib.R.drawable.close_default_icon))
         .bubbleIconDp(54)
+        .expandableView(getInflater().inflate(R.layout.sample_view_1, null))
         .removeBubbleIconDp(54)
         .paddingDp(4)
         .physicsEnabled(true)
-        .expandableColor(Color.GRAY)
-        .gravity(Gravity.CENTER)
+        .expandableColor(Color.WHITE)
+        .gravity(Gravity.LEFT)
         .build();
   }
 }

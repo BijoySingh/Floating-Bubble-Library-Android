@@ -138,6 +138,14 @@ public class FloatingBubbleConfig {
 
     public Builder gravity(int val) {
       gravity = val;
+      if (gravity == Gravity.CENTER ||
+          gravity == Gravity.CENTER_VERTICAL ||
+          gravity == Gravity.CENTER_HORIZONTAL) {
+        gravity = Gravity.CENTER_HORIZONTAL;
+      } else if (gravity == Gravity.TOP ||
+          gravity == Gravity.BOTTOM) {
+        gravity = Gravity.END;
+      }
       return this;
     }
 

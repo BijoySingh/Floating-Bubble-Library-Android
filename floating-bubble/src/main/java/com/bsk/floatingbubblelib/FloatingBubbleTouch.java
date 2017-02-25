@@ -27,6 +27,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
   private int removeBubbleSize;
   private FloatingBubbleConfig config;
   private int padding;
+  private int marginBottom;
 
   private WindowManager.LayoutParams bubbleParams;
   private WindowManager.LayoutParams removeBubbleParams;
@@ -51,6 +52,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     bubbleView = builder.bubbleView;
     sizeY = builder.sizeY;
     sizeX = builder.sizeX;
+    marginBottom = builder.marginBottom;
 
     bubbleParams = (WindowManager.LayoutParams) bubbleView.getLayoutParams();
     removeBubbleParams = (WindowManager.LayoutParams) removeBubbleView.getLayoutParams();
@@ -108,11 +110,11 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
             physics.onTap(expanded);
           }
         } else {
-          checkRemoveBubble();
+          boolean isRemoved = checkRemoveBubble();
           if (listener != null) {
             listener.onUp(motionEvent.getRawX(), motionEvent.getRawY());
           }
-          if (sendEventToPhysics()) {
+          if (!isRemoved && sendEventToPhysics()) {
             physics.onUp(motionEvent.getRawX(), motionEvent.getRawY());
           }
         }
@@ -145,14 +147,14 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
       removeBubbleParams.height = removeBubbleExpandedSize;
       removeBubbleParams.width = removeBubbleExpandedSize;
       removeBubbleParams.x = (sizeX - removeBubbleParams.width) / 2;
-      removeBubbleParams.y = sizeY - removeBubbleParams.height;
+      removeBubbleParams.y = sizeY - removeBubbleParams.height - marginBottom;
       bubbleParams.x = removeBubbleParams.x + (removeBubbleExpandedSize - bubbleView.getWidth()) / 2;
       bubbleParams.y = removeBubbleParams.y + (removeBubbleExpandedSize - bubbleView.getWidth()) / 2;
     } else {
       removeBubbleParams.height = removeBubbleStartSize;
       removeBubbleParams.width = removeBubbleStartSize;
       removeBubbleParams.x = (sizeX - removeBubbleParams.width) / 2;
-      removeBubbleParams.y = sizeY - removeBubbleParams.height;
+      removeBubbleParams.y = sizeY - removeBubbleParams.height - marginBottom;
     }
   }
 
@@ -168,7 +170,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     return centerX > left && centerX < right && centerY > top && centerY < bottom;
   }
 
-  private void checkRemoveBubble() {
+  private boolean checkRemoveBubble() {
     if (isInsideRemoveBubble()) {
       if (listener != null) {
         listener.onRemove();
@@ -176,7 +178,9 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
       if (sendEventToPhysics()) {
         physics.onRemove();
       }
+      return true;
     }
+    return false;
   }
 
   private boolean sendEventToPhysics() {
@@ -244,6 +248,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     private FloatingBubbleTouchListener physics;
     private FloatingBubbleConfig config;
     private int padding;
+    private int marginBottom;
 
     public Builder() {
     }
@@ -309,6 +314,11 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
 
     public Builder padding(int val) {
       padding = val;
+      return this;
+    }
+
+    public Builder marginBottom(int val) {
+      marginBottom = val;
       return this;
     }
   }

@@ -3,13 +3,17 @@ package com.bsk.floatingbubblelib;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -52,7 +56,6 @@ public class FloatingBubbleService extends Service {
   public void onCreate() {
     super.onCreate();
     logger = new FloatingBubbleLogger().setDebugEnabled(true).setTag(TAG);
-    config = getConfig();
   }
 
   @Override
@@ -67,6 +70,9 @@ public class FloatingBubbleService extends Service {
     }
 
     logger.log("Start with START_STICKY");
+
+    // Remove existing views
+    removeAllViews();
 
     // Load the Window Managers
     setupWindowManager();
@@ -113,15 +119,23 @@ public class FloatingBubbleService extends Service {
 
   private void setupWindowManager() {
     windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-    inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+    setLayoutInflater();
     windowManager.getDefaultDisplay().getSize(windowSize);
+  }
+
+  protected LayoutInflater setLayoutInflater() {
+    inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+    return inflater;
   }
 
   /**
    * Creates the views
    */
   protected void setupViews() {
+    config = getConfig();
     int padding = dpToPixels(config.getPaddingDp());
+    int iconSize = dpToPixels(config.getBubbleIconDp());
+    int bottomMargin = getExpandableViewBottomMargin();
 
     // Setting up view
     bubbleView = inflater.inflate(R.layout.floating_bubble_view, null);
@@ -134,14 +148,15 @@ public class FloatingBubbleService extends Service {
     removeBubbleParams.width = dpToPixels(config.getRemoveBubbleIconDp());
     removeBubbleParams.height = dpToPixels(config.getRemoveBubbleIconDp());
     removeBubbleParams.x = (windowSize.x - removeBubbleParams.width) / 2;
-    removeBubbleParams.y = windowSize.y - removeBubbleParams.height - padding;
+    removeBubbleParams.y = windowSize.y - removeBubbleParams.height - bottomMargin;
     removeBubbleView.setVisibility(View.GONE);
     windowManager.addView(removeBubbleView, removeBubbleParams);
 
     // Setting up the Expandable View setup
     expandableParams = getDefaultWindowParams(
         WindowManager.LayoutParams.MATCH_PARENT,
-        WindowManager.LayoutParams.WRAP_CONTENT);
+        WindowManager.LayoutParams.MATCH_PARENT);
+    expandableParams.height = windowSize.y - iconSize - bottomMargin;
     expandableParams.gravity = Gravity.TOP | Gravity.START;
     expandableView.setVisibility(View.GONE);
     ((LinearLayout) expandableView).setGravity(config.getGravity());
@@ -151,8 +166,8 @@ public class FloatingBubbleService extends Service {
     // Setting up the Floating Bubble View
     bubbleParams = getDefaultWindowParams();
     bubbleParams.gravity = Gravity.TOP | Gravity.START;
-    bubbleParams.width = dpToPixels(config.getBubbleIconDp());
-    bubbleParams.height = dpToPixels(config.getBubbleIconDp());
+    bubbleParams.width = iconSize;
+    bubbleParams.height = iconSize;
     windowManager.addView(bubbleView, bubbleParams);
 
     // Setting the configuration
@@ -162,24 +177,39 @@ public class FloatingBubbleService extends Service {
     if (config.getBubbleIcon() != null) {
       ((ImageView) bubbleView).setImageDrawable(config.getBubbleIcon());
     }
+
+    ImageView triangle = (ImageView) expandableView.findViewById(R.id.expandableViewTriangle);
+    LinearLayout container = (LinearLayout) expandableView.findViewById(R.id.expandableViewContainer);
     if (config.getExpandableView() != null) {
-      ImageView triangle = (ImageView) expandableView.findViewById(R.id.expandableViewTriangle);
       triangle.setColorFilter(config.getExpandableColor());
       ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) triangle.getLayoutParams();
       params.leftMargin = dpToPixels((config.getBubbleIconDp() - 16) / 2);
       params.rightMargin = dpToPixels((config.getBubbleIconDp() - 16) / 2);
 
-      LinearLayout container = (LinearLayout) expandableView.findViewById(R.id.expandableViewContainer);
+      triangle.setVisibility(View.VISIBLE);
+      container.setVisibility(View.VISIBLE);
+
       container.setBackgroundColor(config.getExpandableColor());
       container.removeAllViews();
       container.addView(config.getExpandableView());
+    } else {
+      triangle.setVisibility(View.GONE);
+      container.setVisibility(View.GONE);
     }
   }
 
+  /**
+   * Get the Bubble config
+   *
+   * @return the config
+   */
   protected FloatingBubbleConfig getConfig() {
     return FloatingBubbleConfig.getDefault(getApplicationContext());
   }
 
+  /**
+   * Sets the touch listener
+   */
   protected void setTouchListener() {
     physics = new FloatingBubblePhysics.Builder()
         .sizeX(windowSize.x)
@@ -204,6 +234,11 @@ public class FloatingBubbleService extends Service {
         .build());
   }
 
+  /**
+   * Gets the touch listener for the bubble
+   *
+   * @return the touch listener
+   */
   public FloatingBubbleTouchListener getTouchListener() {
     return new DefaultFloatingBubbleTouchListener() {
       @Override
@@ -238,6 +273,31 @@ public class FloatingBubbleService extends Service {
             | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
             | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
         PixelFormat.TRANSLUCENT);
+  }
+
+  /**
+   * Get the layout inflater for view inflation
+   *
+   * @return the layout inflater
+   */
+  protected LayoutInflater getInflater() {
+    return inflater == null ? setLayoutInflater() : inflater;
+  }
+
+  /**
+   * Get the expandable view's bottom margin
+   *
+   * @return margin
+   */
+  private int getExpandableViewBottomMargin() {
+    Resources resources = getApplicationContext().getResources();
+    int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+    int navBarHeight = 0;
+    if (resourceId > 0) {
+      navBarHeight = resources.getDimensionPixelSize(resourceId);
+    }
+
+    return navBarHeight;
   }
 
   /**
