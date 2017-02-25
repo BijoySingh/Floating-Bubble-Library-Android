@@ -181,7 +181,7 @@ public class FloatingBubbleService extends Service {
     ImageView triangle = (ImageView) expandableView.findViewById(R.id.expandableViewTriangle);
     LinearLayout container = (LinearLayout) expandableView.findViewById(R.id.expandableViewContainer);
     if (config.getExpandableView() != null) {
-      triangle.setColorFilter(config.getExpandableColor());
+      triangle.setColorFilter(config.getTriangleColor());
       ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) triangle.getLayoutParams();
       params.leftMargin = dpToPixels((config.getBubbleIconDp() - 16) / 2);
       params.rightMargin = dpToPixels((config.getBubbleIconDp() - 16) / 2);

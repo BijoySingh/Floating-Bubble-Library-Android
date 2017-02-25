@@ -27,6 +27,7 @@ public class SimpleService extends FloatingBubbleService {
         .paddingDp(4)
         .physicsEnabled(true)
         .expandableColor(Color.WHITE)
+        .triangleColor(0xFF215A64)
         .gravity(Gravity.LEFT)
         .build();
   }

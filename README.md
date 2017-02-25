@@ -55,8 +55,11 @@ public class FloatingService extends FloatingBubbleService {
         // Does the bubble attract towards the walls
         .physicsEnabled(true)
 
-        // The color of the triangable and background of the layout
+        // The color of background of the layout
         .expandableColor(Color.WHITE)
+
+        // The color of the triangular layout
+        .triangleColor(Color.WHITE)
 
         // Horizontal gravity of the bubble when expanded
         .gravity(Gravity.END)

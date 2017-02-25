@@ -20,6 +20,7 @@ public class FloatingBubbleConfig {
   private int bubbleIconDp;
   private int removeBubbleIconDp;
   private int expandableColor;
+  private int triangleColor;
   private int gravity;
   private int paddingDp;
   private boolean physicsEnabled;
@@ -31,6 +32,7 @@ public class FloatingBubbleConfig {
     bubbleIconDp = builder.bubbleIconDp;
     removeBubbleIconDp = builder.removeBubbleIconDp;
     expandableColor = builder.expandableColor;
+    triangleColor = builder.triangleColor;
     gravity = builder.gravity;
     paddingDp = builder.paddingDp;
     physicsEnabled = builder.physicsEnabled;
@@ -45,6 +47,7 @@ public class FloatingBubbleConfig {
         .paddingDp(4)
         .physicsEnabled(true)
         .expandableColor(Color.WHITE)
+        .triangleColor(Color.WHITE)
         .gravity(Gravity.END);
   }
 
@@ -76,6 +79,10 @@ public class FloatingBubbleConfig {
     return expandableColor;
   }
 
+  public int getTriangleColor() {
+    return triangleColor;
+  }
+
   public int getGravity() {
     return gravity;
   }
@@ -92,12 +99,13 @@ public class FloatingBubbleConfig {
     private Drawable bubbleIcon;
     private Drawable removeBubbleIcon;
     private View expandableView;
-    private int bubbleIconDp;
-    private int removeBubbleIconDp;
-    private int expandableColor;
-    private int gravity;
-    private int paddingDp;
-    private boolean physicsEnabled;
+    private int bubbleIconDp = 64;
+    private int removeBubbleIconDp = 64;
+    private int expandableColor = Color.WHITE;
+    private int triangleColor = Color.WHITE;
+    private int gravity = Gravity.END;
+    private int paddingDp = 4;
+    private boolean physicsEnabled = true;
 
     public Builder() {
     }
@@ -124,6 +132,11 @@ public class FloatingBubbleConfig {
 
     public Builder removeBubbleIconDp(int val) {
       removeBubbleIconDp = val;
+      return this;
+    }
+
+    public Builder triangleColor(int val) {
+      triangleColor = val;
       return this;
     }
 
