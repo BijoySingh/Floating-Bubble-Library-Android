@@ -2,7 +2,16 @@
 Simple library for adding a floating bubble in your application!
 
 ## Installation
-**NOTE: This will not work for some time, I am resolving this**
+```java
+repositories {
+    ...
+    maven {
+        url "http://dl.bintray.com/bijoysingh693/maven"
+    }
+    ...
+}
+```
+
 ```java
 compile 'com.github.bijoysingh.floating-bubble:1.0.0'
 ```
