@@ -51,6 +51,7 @@ public class FloatingBubbleService extends Service {
 
   private FloatingBubbleConfig config;
   private FloatingBubblePhysics physics;
+  private FloatingBubbleTouch touch;
 
   @Override
   public void onCreate() {
@@ -226,21 +227,22 @@ public class FloatingBubbleService extends Service {
         .windowManager(windowManager)
         .build();
 
-    bubbleView.setOnTouchListener(
-        new FloatingBubbleTouch.Builder()
-            .sizeX(windowSize.x)
-            .sizeY(windowSize.y)
-            .listener(getTouchListener())
-            .physics(physics)
-            .bubbleView(bubbleView)
-            .removeBubbleSize(dpToPixels(config.getRemoveBubbleIconDp()))
-            .windowManager(windowManager)
-            .expandableView(expandableView)
-            .removeBubbleView(removeBubbleView)
-            .config(config)
-            .marginBottom(getExpandableViewBottomMargin())
-            .padding(dpToPixels(config.getPaddingDp()))
-            .build());
+    touch = new FloatingBubbleTouch.Builder()
+        .sizeX(windowSize.x)
+        .sizeY(windowSize.y)
+        .listener(getTouchListener())
+        .physics(physics)
+        .bubbleView(bubbleView)
+        .removeBubbleSize(dpToPixels(config.getRemoveBubbleIconDp()))
+        .windowManager(windowManager)
+        .expandableView(expandableView)
+        .removeBubbleView(removeBubbleView)
+        .config(config)
+        .marginBottom(getExpandableViewBottomMargin())
+        .padding(dpToPixels(config.getPaddingDp()))
+        .build();
+
+    bubbleView.setOnTouchListener(touch);
   }
 
   /**
@@ -309,6 +311,14 @@ public class FloatingBubbleService extends Service {
    */
   protected Context getContext() {
     return getApplicationContext();
+  }
+
+  /**
+   * Sets the state of the expanded view
+   * @param expanded the expanded view state
+   */
+  protected void setState(boolean expanded) {
+    touch.setState(expanded);
   }
 
   /**

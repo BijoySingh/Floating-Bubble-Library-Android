@@ -194,19 +194,22 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     removeBubbleView.setVisibility(visibility);
   }
 
-  private void toggleView() {
+  public void setState(boolean state) {
+    expanded = state;
     if (expanded) {
-      compressView();
-    } else {
       expandView();
+    } else {
+      compressView();
     }
   }
 
+  private void toggleView() {
+    expanded = !expanded;
+    setState(expanded);
+  }
+
   private void compressView() {
-    if (expanded) {
-      expanded = false;
-      expandableView.setVisibility(View.GONE);
-    }
+    expandableView.setVisibility(View.GONE);
   }
 
   private void expandView() {
@@ -229,11 +232,7 @@ public class FloatingBubbleTouch implements View.OnTouchListener {
     }
 
     animator.animate(x, y);
-    if (!expanded) {
-      expanded = true;
-      expandableView.setVisibility(View.VISIBLE);
-    }
-
+    expandableView.setVisibility(View.VISIBLE);
     expandableParams.y = y + bubbleView.getWidth();
     windowManager.updateViewLayout(expandableView, expandableParams);
   }

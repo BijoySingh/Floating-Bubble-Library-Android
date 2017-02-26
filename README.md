@@ -13,7 +13,7 @@ repositories {
 ```
 
 ```java
-compile 'com.github.bijoysingh.floating-bubble:1.0.2'
+compile 'com.github.bijoysingh.floating-bubble:1.0.4'
 ```
 
 ## Demos
@@ -92,6 +92,15 @@ Override the onGetIntent function. It will return true if the intent is valid, e
     // your logic to get information from the intent
     return true;
   }
+```
+
+You can change the state of the expanded view at runtime by
+```java
+// To expand
+setState(true);
+
+// To compress
+setState(false);
 ```
 
 ## License
