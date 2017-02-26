@@ -13,7 +13,7 @@ repositories {
 ```
 
 ```java
-compile 'com.github.bijoysingh.floating-bubble:1.0.0'
+compile 'com.github.bijoysingh.floating-bubble:1.0.1'
 ```
 
 ## Demos
@@ -80,6 +80,15 @@ public class FloatingService extends FloatingBubbleService {
         .build();
   }
 }
+```
+
+Override the onGetIntent function. It will return true if the intent is valid, else false
+```java
+  @Override
+  protected boolean onGetIntent(@NonNull Intent intent) {
+    // your logic to get information from the intent
+    return true;
+  }
 ```
 
 ## License

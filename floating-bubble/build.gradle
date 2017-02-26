@@ -38,7 +38,7 @@ ext {
     siteUrl = 'https://github.com/BijoySingh/FloatingBubbleLib'
     gitUrl = 'https://github.com/BijoySingh/FloatingBubbleLib.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'bijoysingh693'
     developerName = 'Bijoy Singh Kochar'
