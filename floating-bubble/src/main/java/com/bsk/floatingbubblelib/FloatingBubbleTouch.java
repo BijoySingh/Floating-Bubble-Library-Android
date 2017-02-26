@@ -12,7 +12,7 @@ import android.view.WindowManager;
 
 public class FloatingBubbleTouch implements View.OnTouchListener {
 
-  private static final int TOUCH_CLICK_TIME = 150;
+  private static final int TOUCH_CLICK_TIME = 250;
   private static final float EXPANSION_FACTOR = 1.25f;
 
   private int sizeX;

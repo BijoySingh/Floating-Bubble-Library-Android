@@ -25,6 +25,7 @@ public class SimpleService extends FloatingBubbleService {
         .expandableView(getInflater().inflate(R.layout.sample_view_1, null))
         .removeBubbleIconDp(54)
         .paddingDp(4)
+        .borderRadiusDp(0)
         .physicsEnabled(true)
         .expandableColor(Color.WHITE)
         .triangleColor(0xFF215A64)

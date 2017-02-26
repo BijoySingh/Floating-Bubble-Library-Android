@@ -13,7 +13,7 @@ repositories {
 ```
 
 ```java
-compile 'com.github.bijoysingh.floating-bubble:1.0.1'
+compile 'com.github.bijoysingh.floating-bubble:1.0.2'
 ```
 
 ## Demos
@@ -60,6 +60,9 @@ public class FloatingService extends FloatingBubbleService {
 
         // Set the padding of the view from the boundary
         .paddingDp(4)
+
+        // Set the radius of the border of the expandable view
+        .borderRadiusDp(4)
 
         // Does the bubble attract towards the walls
         .physicsEnabled(true)

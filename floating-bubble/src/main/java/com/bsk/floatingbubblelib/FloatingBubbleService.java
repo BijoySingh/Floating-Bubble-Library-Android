@@ -9,6 +9,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -177,6 +178,9 @@ public class FloatingBubbleService extends Service {
       ((ImageView) bubbleView).setImageDrawable(config.getBubbleIcon());
     }
 
+    CardView card = (CardView) expandableView.findViewById(R.id.expandableViewCard);
+    card.setRadius(dpToPixels(config.getBorderRadiusDp()));
+
     ImageView triangle = (ImageView) expandableView.findViewById(R.id.expandableViewTriangle);
     LinearLayout container =
         (LinearLayout) expandableView.findViewById(R.id.expandableViewContainer);
@@ -189,6 +193,7 @@ public class FloatingBubbleService extends Service {
 
       triangle.setVisibility(View.VISIBLE);
       container.setVisibility(View.VISIBLE);
+      card.setVisibility(View.VISIBLE);
 
       container.setBackgroundColor(config.getExpandableColor());
       container.removeAllViews();
@@ -196,6 +201,7 @@ public class FloatingBubbleService extends Service {
     } else {
       triangle.setVisibility(View.GONE);
       container.setVisibility(View.GONE);
+      card.setVisibility(View.GONE);
     }
   }
 

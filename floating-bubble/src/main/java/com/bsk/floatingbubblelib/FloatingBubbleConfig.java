@@ -23,6 +23,7 @@ public class FloatingBubbleConfig {
   private int triangleColor;
   private int gravity;
   private int paddingDp;
+  private int borderRadiusDp;
   private boolean physicsEnabled;
 
   private FloatingBubbleConfig(Builder builder) {
@@ -35,6 +36,7 @@ public class FloatingBubbleConfig {
     triangleColor = builder.triangleColor;
     gravity = builder.gravity;
     paddingDp = builder.paddingDp;
+    borderRadiusDp = builder.borderRadiusDp;
     physicsEnabled = builder.physicsEnabled;
   }
 
@@ -95,6 +97,10 @@ public class FloatingBubbleConfig {
     return physicsEnabled;
   }
 
+  public int getBorderRadiusDp() {
+    return borderRadiusDp;
+  }
+
   public static final class Builder {
     private Drawable bubbleIcon;
     private Drawable removeBubbleIcon;
@@ -105,6 +111,7 @@ public class FloatingBubbleConfig {
     private int triangleColor = Color.WHITE;
     private int gravity = Gravity.END;
     private int paddingDp = 4;
+    private int borderRadiusDp = 4;
     private boolean physicsEnabled = true;
 
     public Builder() {
@@ -164,6 +171,11 @@ public class FloatingBubbleConfig {
 
     public Builder paddingDp(int val) {
       paddingDp = val;
+      return this;
+    }
+
+    public Builder borderRadiusDp(int val) {
+      borderRadiusDp = val;
       return this;
     }
 
