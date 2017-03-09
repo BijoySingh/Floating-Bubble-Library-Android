@@ -13,7 +13,7 @@ repositories {
 ```
 
 ```java
-compile 'com.github.bijoysingh.floating-bubble:1.0.4'
+compile 'com.github.bijoysingh.floating-bubble:1.0.6'
 ```
 
 ## Demos
@@ -78,6 +78,9 @@ public class FloatingService extends FloatingBubbleService {
 
         // The view which is visible in the expanded view
         .expandableView(yourViewAfterClick)
+
+        // Set the alpha value for the remove bubble icon
+        .removeBubbleAlpha(0.75f)
 
         // Building
         .build();

@@ -19,6 +19,7 @@ public class FloatingBubbleConfig {
   private View expandableView;
   private int bubbleIconDp;
   private int removeBubbleIconDp;
+  private float removeBubbleAlpha;
   private int expandableColor;
   private int triangleColor;
   private int gravity;
@@ -38,6 +39,7 @@ public class FloatingBubbleConfig {
     paddingDp = builder.paddingDp;
     borderRadiusDp = builder.borderRadiusDp;
     physicsEnabled = builder.physicsEnabled;
+    removeBubbleAlpha = builder.removeBubbleAlpha;
   }
 
   public static Builder getDefaultBuilder(Context context) {
@@ -47,6 +49,7 @@ public class FloatingBubbleConfig {
         .bubbleIconDp(64)
         .removeBubbleIconDp(64)
         .paddingDp(4)
+        .removeBubbleAlpha(1.0f)
         .physicsEnabled(true)
         .expandableColor(Color.WHITE)
         .triangleColor(Color.WHITE)
@@ -101,6 +104,10 @@ public class FloatingBubbleConfig {
     return borderRadiusDp;
   }
 
+  public float getRemoveBubbleAlpha() {
+    return removeBubbleAlpha;
+  }
+
   public static final class Builder {
     private Drawable bubbleIcon;
     private Drawable removeBubbleIcon;
@@ -112,6 +119,7 @@ public class FloatingBubbleConfig {
     private int gravity = Gravity.END;
     private int paddingDp = 4;
     private int borderRadiusDp = 4;
+    private float removeBubbleAlpha = 1.0f;
     private boolean physicsEnabled = true;
 
     public Builder() {
@@ -181,6 +189,11 @@ public class FloatingBubbleConfig {
 
     public Builder physicsEnabled(boolean val) {
       physicsEnabled = val;
+      return this;
+    }
+
+    public Builder removeBubbleAlpha(float val) {
+      removeBubbleAlpha = val;
       return this;
     }
   }

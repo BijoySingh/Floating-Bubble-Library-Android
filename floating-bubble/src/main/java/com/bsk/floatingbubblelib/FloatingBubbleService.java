@@ -151,6 +151,7 @@ public class FloatingBubbleService extends Service {
     removeBubbleParams.x = (windowSize.x - removeBubbleParams.width) / 2;
     removeBubbleParams.y = windowSize.y - removeBubbleParams.height - bottomMargin;
     removeBubbleView.setVisibility(View.GONE);
+    removeBubbleView.setAlpha(config.getRemoveBubbleAlpha());
     windowManager.addView(removeBubbleView, removeBubbleParams);
 
     // Setting up the Expandable View setup
