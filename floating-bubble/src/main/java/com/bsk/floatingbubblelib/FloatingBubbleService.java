@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -280,7 +281,9 @@ public class FloatingBubbleService extends Service {
     return new WindowManager.LayoutParams(
         width,
         height,
-        WindowManager.LayoutParams.TYPE_PHONE,
+        Build.VERSION.SDK_INT >= 26
+            ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            : WindowManager.LayoutParams.TYPE_PHONE,
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
         | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
