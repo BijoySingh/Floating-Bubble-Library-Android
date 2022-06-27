@@ -4,10 +4,19 @@ Simple library for adding a floating bubble in your application!
 ## Installation
 
 ```java
-compile 'com.github.bijoysingh.floating-bubble:3.0.0'
+// Add the implementation inside the build.gradle file which is in the application folder
 
+// Now:
+dependencies {
+   ...
+   implementation "com.github.bijoysingh:floating-bubble:3.0.0" // add this line
+   ...
+   
+   
+// Before it was imported like this:
 // compile 'com.github.bijoysingh.floating-bubble:2.0.0' for Android Support v27
 // compile 'com.github.bijoysingh.floating-bubble:1.2.0' for Android Support v26
+}
 ```
 
 ## Demos
